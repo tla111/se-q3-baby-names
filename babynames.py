@@ -49,17 +49,22 @@ def extract_names(filename):
     ['2006', 'Aaliyah 91', 'Aaron 57', 'Abagail 895', ...]
     """
     names = []
-    for name in filename:
-        names.append(name)
-    # +++your code here+++
-    print(names)
+    with open(filename, "r") as file_name:
+        content = file_name.read()
+        popular_year = re.search(r"Popularity\sin\s(\d\d\d\d)", content)
+        names.append(popular_year.group(1))
+        print(names)
 
-    names.sort(key=my_func)
-    # return names
 
-    # pattern = re.compile()
-    # find_matches = pattern.match()
-    # print(find_matches)
+extract_names("baby1990.html")
+
+# names.sort(key=my_func)
+# return names
+
+# pattern = re.compile()
+# find_matches = pattern.match()
+# print(find_matches)
+# Find regrex method -> Find all elements (names/nums) in the string
 
 
 def create_parser():
