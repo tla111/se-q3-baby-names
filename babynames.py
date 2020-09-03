@@ -37,6 +37,9 @@ import sys
 import re
 import argparse
 
+# def my_func(element):
+#     return element[-1]
+
 
 def extract_names(filename):
     """
@@ -46,8 +49,17 @@ def extract_names(filename):
     ['2006', 'Aaliyah 91', 'Aaron 57', 'Abagail 895', ...]
     """
     names = []
+    for name in filename:
+        names.append(name)
     # +++your code here+++
-    return names
+    print(names)
+
+    names.sort(key=my_func)
+    # return names
+
+    # pattern = re.compile()
+    # find_matches = pattern.match()
+    # print(find_matches)
 
 
 def create_parser():
