@@ -7,7 +7,11 @@
 # Licensed under the Apache License, Version 2.0
 # http://www.apache.org/licenses/LICENSE-2.0
 
+import argparse
+import re
+import sys
 __author__ = 'Timothy La (tla111)'
+'Received help from Howard & Joseph'
 
 """
 Define the extract_names() function below and change main()
@@ -32,10 +36,6 @@ Suggested milestones for incremental development:
  - Build the [year, 'name rank', ... ] list and print it
  - Fix main() to use the extracted_names list
 """
-
-import sys
-import re
-import argparse
 
 
 def extract_names(filename):
