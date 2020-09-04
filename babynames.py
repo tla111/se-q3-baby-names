@@ -56,7 +56,7 @@ def extract_names(filename):
             return "No Match"
         find_name = re.findall(
             r"<td>(\d+)</td><td>(\w+)</td><td>(\w+)</td>", content)
-        for x in range(len(find_name) - 1):
+        for x in range(len(find_name)):
             if find_name[x][1] not in names_dict.keys():
                 names_dict[find_name[x][1]] = find_name[x][0]
             if find_name[x][2] not in names_dict.keys():
@@ -64,11 +64,7 @@ def extract_names(filename):
         result = list(sorted(names_dict.items()))
         for item in result:
             names.append(item[0] + " " + item[1])
-        print(names)
         return names
-
-
-extract_names("baby1990.html")
 
 
 def create_parser():
@@ -95,10 +91,24 @@ def main(args):
         parser.print_usage()
         sys.exit(1)
 
+    # Taking files -> put list
     file_list = ns.files
 
     # option flag
+    # seeing being called
     create_summary = ns.summaryfile
+
+    for file in file_list:
+        take_names = extract_names(file)
+        print('\n'.join(take_names))
+
+  # Option 1 -  If not -> --summaryfile
+    # if create_summary:
+    #     with open('filename', 'w') as make_file:
+    #         make_file.write('\n'.join(take_names))
+    # else:
+    #   print("missing --summaryfile")
+  # Option 2 -  If true -> Make text file
 
     # For each filename, call `extract_names()` with that single file.
     # Format the resulting list as a vertical list (separated by newline \n).
