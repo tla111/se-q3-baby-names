@@ -11,7 +11,7 @@ import argparse
 import re
 import sys
 __author__ = 'Timothy La (tla111)'
-'Received help from Howard & Joseph'
+'Received help from Howard & Joseph & John'
 
 """
 Define the extract_names() function below and change main()
@@ -100,15 +100,13 @@ def main(args):
 
     for file in file_list:
         take_names = extract_names(file)
-        print('\n'.join(take_names))
-
-  # Option 1 -  If not -> --summaryfile
-    # if create_summary:
-    #     with open('filename', 'w') as make_file:
-    #         make_file.write('\n'.join(take_names))
-    # else:
-    #   print("missing --summaryfile")
-  # Option 2 -  If true -> Make text file
+        if create_summary:
+            new_file = file + ".summary"
+            with open(new_file, "w") as make_file:
+                for data in take_names:
+                    make_file.write(data + '\n')
+        else:
+            print('\n'.join(take_names))
 
     # For each filename, call `extract_names()` with that single file.
     # Format the resulting list as a vertical list (separated by newline \n).
