@@ -7,6 +7,12 @@
 # Licensed under the Apache License, Version 2.0
 # http://www.apache.org/licenses/LICENSE-2.0
 
+import argparse
+import re
+import sys
+__author__ = 'Timothy La (tla111)'
+'Received help from Howard & Joseph & John'
+
 """
 Define the extract_names() function below and change main()
 to call it.
@@ -31,10 +37,6 @@ Suggested milestones for incremental development:
  - Fix main() to use the extracted_names list
 """
 
-import sys
-import re
-import argparse
-
 
 def extract_names(filename):
     """
@@ -43,9 +45,52 @@ def extract_names(filename):
     the name-rank strings in alphabetical order.
     ['2006', 'Aaliyah 91', 'Aaron 57', 'Abagail 895', ...]
     """
+    # Store an empty list into a variable
     names = []
-    # +++your code here+++
-    return names
+    # Store an empty dictionary into a variable
+    names_dict = {}
+    # Open a file to read and store in a variable
+    with open(filename, "r") as file_name:
+        # Read the contents of the file
+        content = file_name.read()
+        # Use regrex to search for an expression in content with:
+        #   - Popularity; white space; in; white space; 4 digits
+        popular_year = re.search(r"Popularity\sin\s(\d\d\d\d)", content)
+        # Option 1: If there is a match
+        #   Add the expression to names
+        if popular_year:
+            names.append(popular_year.group(1))
+        # Option 2: If there is not a match
+        #   Return "No Match"
+        else:
+            return "No Match"
+        # "Return all non-overlapping matches of pattern in string"
+        # Use regrex to search an expression in content with:
+        #   - <td>digit</td><td>word</td><td>word</td>
+        find_name = re.findall(
+            r"<td>(\d+)</td><td>(\w+)</td><td>(\w+)</td>", content)
+        # Loop over 1000 times (length of find_name)
+        for x in range(len(find_name)):
+            # Option 1: If there is not a key of find_name[x][1] in names_dict
+            #   Store a key of find_name[x][1] & value of find_name[x][0] in
+            #   names_dict
+            # Ex: ("1", "Michael", "Jessica") -> {"Michael": "1"}
+            # Option 2: If there is not a key of find_name[x][2] in names_dict
+            #   Store a key of find_name[x][2] & value of find_name[x][0] in
+            #   names_dict
+            # Ex: ("1", "Michael", "Jessica") -> {"Jessica": "1"}
+            if find_name[x][1] not in names_dict.keys():
+                names_dict[find_name[x][1]] = find_name[x][0]
+            if find_name[x][2] not in names_dict.keys():
+                names_dict[find_name[x][2]] = find_name[x][0]
+        # Sort the dictionary by name and store in a list
+        result = list(sorted(names_dict.items()))
+        # Loop over each tuple in the list
+        #   Append the first item + space + second item into names list
+        for item in result:
+            names.append(item[0] + " " + item[1])
+        # Output names to be used later
+        return names
 
 
 def create_parser():
@@ -72,10 +117,22 @@ def main(args):
         parser.print_usage()
         sys.exit(1)
 
+    # Taking files -> put list
     file_list = ns.files
 
     # option flag
+    # seeing being called
     create_summary = ns.summaryfile
+
+    for file in file_list:
+        take_names = extract_names(file)
+        if create_summary:
+            new_file = file + ".summary"
+            with open(new_file, "w") as make_file:
+                for data in take_names:
+                    make_file.write(data + '\n')
+        else:
+            print('\n'.join(take_names))
 
     # For each filename, call `extract_names()` with that single file.
     # Format the resulting list as a vertical list (separated by newline \n).
